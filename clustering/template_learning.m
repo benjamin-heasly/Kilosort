@@ -68,7 +68,20 @@ for j = 1:numel(ycenter)
 %     size(data)
     
     
-    ich = unique(iC(:, itemp));
+    % ich = unique(iC(:, itemp));
+    % This assignment on line 71 somtimes errors -- I'm not sure why.
+    % Some issue posters reported success with retrying as a workaround.
+    fprintf('template_learning size of iC:\n');
+    disp(size(iC))
+    fprintf('template_learning size of itemp:\n');
+    disp(size(itemp))
+    try
+        ich = unique(iC(:, itemp));
+    catch e
+        fprintf('template_learning retrying after error:\n');
+        disp(e)
+        ich = unique(iC(:, itemp));
+    end
 %     ch_min = ich(1)-1;
 %     ch_max = ich(end);
     
