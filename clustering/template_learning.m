@@ -110,7 +110,7 @@ Wpca = Wpca(:,:,1:n0);
 toc
 %%
 rez.W = zeros(61,0, 3, 'single');
-rez.U = zeros(ops.Nchan,0,3, 'single');
+rez.U = zeros(max(3, Nchan),0,3, 'single');
 rez.mu = zeros(1,0, 'single');
 for  t = 1:n0
     dWU = wPCA * gpuArray(Wpca(:,:,t));
