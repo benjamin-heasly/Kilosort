@@ -25,7 +25,7 @@ Nfilt 	= size(W,2);
 nt0 = ops.nt0;
 Nchan 	= ops.Nchan;
 
-dWU = gpuArray.zeros(nt0, Nchan, Nfilt, 'double');
+dWU = gpuArray.zeros(nt0, max(3, Nchan), Nfilt, 'double');
 for j = 1:Nfilt
     dWU(:,:,j) = mu(j) * squeeze(W(:, j, :)) * squeeze(U(:, j, :))';
 end
