@@ -97,7 +97,11 @@ spikeAmps = tempAmpsUnscaled(spikeTemplates).*amplitudes;
 
 % take the average of all spike amps to get actual template amps (since
 % tempScalingAmps are equal mean for all templates)
-ta = clusterAverage(spikeTemplates, spikeAmps);
+if isempty(spikeTemplates)
+    ta = [];
+else
+    ta = clusterAverage(spikeTemplates, spikeAmps);
+end
 tids = unique(spikeTemplates);
 tempAmps = zeros(numel(rez.mu),1);
 tempAmps(tids) = ta; % because ta only has entries for templates that had at least one spike
