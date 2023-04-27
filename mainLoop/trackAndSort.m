@@ -77,7 +77,7 @@ pm = exp(-1/400);
 Nsum = min(Nchan,7); % how many channels to extend out the waveform in mexgetspikes
 % lots of parameters passed into the CUDA scripts
 Params     = double([NT Nfilt ops.Th(1) nInnerIter nt0 Nnearest ...
-    Nrank ops.lam pm Nchan NchanNear ops.nt0min 1 Nsum NrankPC ops.Th(1) useStableMode]);
+    Nrank ops.lam pm max(Nchan, 3) NchanNear ops.nt0min 1 Nsum NrankPC ops.Th(1) useStableMode]);
 
 % initialize average number of spikes per batch for each template
 nsp = gpuArray.zeros(Nfilt,1, 'int32');
@@ -169,6 +169,11 @@ for ibatch = 1:niter
     % since some clusters have different number of spikes, we need to apply the
     % exp(pm) factor several times, and fexp is the resulting update factor
     % for each template
+
+    disp('dWU,dWU1,dWU0 sizes')
+    disp(size(dWU))
+    disp(size(dWU1))
+    disp(size(dWU0))
 
     dWU1 = dWU1  + dWU0;
     nsp = nsp + nsp0;
