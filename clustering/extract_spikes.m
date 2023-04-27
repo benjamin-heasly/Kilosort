@@ -94,18 +94,16 @@ for k = 1:ops.Nbatch
     toff = ops.nt0min + t0 + ops.NT *(k-1);
     st(1,:) = st(1,:) + toff;
     st = double(st);
-    % st(5,:) = cF;
-    % This assignment on line 97 somtimes errors -- I'm not sure why.
-    % Some issue posters reported success with retrying as a workaround.
-    fprintf('extract_spikes size of st:\n');
-    disp(size(st))
-    fprintf('extract_spikes size of cF:\n');
-    disp(size(cF))
     try
+        % This assignment somtimes errors -- CUDA race condition?.
         st(5,:) = cF;
     catch e
         fprintf('extract_spikes retrying after error:\n');
         disp(e)
+        fprintf('extract_spikes size of st:\n');
+        disp(size(st))
+        fprintf('extract_spikes size of cF:\n');
+        disp(size(cF))
         st(5,:) = cF;
     end
     st(6,:) = k-1;
