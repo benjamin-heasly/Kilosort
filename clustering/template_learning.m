@@ -36,7 +36,7 @@ xcenter = (min(rez.xc) + dminx-1):(2*dminx):(max(rez.xc)+dminx+1);
 xcenter = xcenter(:);
 ycenter = ycenter(:);
 
-Wpca = zeros(6, Nchan, 1000, 'single');
+Wpca = zeros(6, max(3, Nchan), 1000, 'single');
 nst = numel(ktid);
 hid = zeros(nst,1 , 'int32');
 
