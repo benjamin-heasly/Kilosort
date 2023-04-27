@@ -98,7 +98,7 @@ for k = 1:ops.Nbatch
         % This assignment somtimes errors -- CUDA race condition?.
         st(5,:) = cF;
     catch e
-        fprintf('extract_spikes retrying after error:\n');
+        fprintf('extract_spikes retrying batch %d after error:\n', k);
         disp(e)
         fprintf('extract_spikes size of st:\n');
         disp(size(st))
