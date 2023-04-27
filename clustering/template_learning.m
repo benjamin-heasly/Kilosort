@@ -36,7 +36,7 @@ xcenter = (min(rez.xc) + dminx-1):(2*dminx):(max(rez.xc)+dminx+1);
 xcenter = xcenter(:);
 ycenter = ycenter(:);
 
-Wpca = zeros(6, Nchan, 1000, 'single');
+Wpca = zeros(6, max(3, Nchan), 1000, 'single');
 nst = numel(ktid);
 hid = zeros(nst,1 , 'int32');
 
@@ -110,19 +110,20 @@ Wpca = Wpca(:,:,1:n0);
 toc
 %%
 rez.W = zeros(61,0, 3, 'single');
-rez.U = zeros(ops.Nchan,0,3, 'single');
+rez.U = zeros(max(3, Nchan),0,3, 'single');
 rez.mu = zeros(1,0, 'single');
-channelComponentRange = 1:min(ops.Nchan, 3);
 for  t = 1:n0
     dWU = wPCA * gpuArray(Wpca(:,:,t));
     [w,s,u] = svdecon(dWU);
+
     disp('w,s,u sizes:')
     disp(size(w))
     disp(size(s))
     disp(size(u))
+
     wsign = -sign(w(21,1));
-    rez.W(:,t,channelComponentRange) = gather(wsign * w(:,channelComponentRange));
-    rez.U(:,t,channelComponentRange) = gather(wsign * u(:,channelComponentRange) * s(channelComponentRange,channelComponentRange));
+    rez.W(:,t,:) = gather(wsign * w(:,1:3));
+    rez.U(:,t,:) = gather(wsign * u(:,1:3) * s(1:3,1:3));
     rez.mu(t) = gather(sum(sum(rez.U(:,t,:).^2))^.5);
     rez.U(:,t,:) = rez.U(:,t,:) / rez.mu(t);
 end
