@@ -70,7 +70,7 @@ for j = 1:numel(ycenter)
         % This assignment somtimes errors -- CUDA race condition?
         ich = unique(iC(:, itemp));
     catch e
-        fprintf('template_learning retrying after error:\n');
+        fprintf('template_learning retrying in group % of % after error:\n', j, numel(ycenter));
         disp(e)
         fprintf('template_learning size of iC:\n');
         disp(size(iC))
