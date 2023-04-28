@@ -25,7 +25,7 @@ Nfilt 	= size(W,2);
 nt0 = ops.nt0;
 Nchan 	= ops.Nchan;
 
-dWU = gpuArray.zeros(nt0, max(3, Nchan), Nfilt, 'double');
+dWU = gpuArray.zeros(nt0, Nchan, Nfilt, 'double');
 for j = 1:Nfilt
     dWU(:,:,j) = mu(j) * squeeze(W(:, j, :)) * squeeze(U(:, j, :))';
 end
@@ -77,7 +77,7 @@ pm = exp(-1/400);
 Nsum = min(Nchan,7); % how many channels to extend out the waveform in mexgetspikes
 % lots of parameters passed into the CUDA scripts
 Params     = double([NT Nfilt ops.Th(1) nInnerIter nt0 Nnearest ...
-    Nrank ops.lam pm max(Nchan, 3) NchanNear ops.nt0min 1 Nsum NrankPC ops.Th(1) useStableMode]);
+    Nrank ops.lam pm Nchan NchanNear ops.nt0min 1 Nsum NrankPC ops.Th(1) useStableMode]);
 
 % initialize average number of spikes per batch for each template
 nsp = gpuArray.zeros(Nfilt,1, 'int32');
